@@ -1,13 +1,15 @@
 
+
 # ⚡ FastAPI + Nginx Load Balancer (Dockerized)
 
-A simple setup to understand **different load balancing types** (Round Robin, Least Connections, IP Hash) using **FastAPI**, **Nginx**, and **Docker Compose** 🐳.
+A simple setup to understand and experiment with **different load balancing algorithms** — 🌀 **Round Robin**, ⚖️ **Least Connections**, and 🔒 **IP Hash** — using **FastAPI**, **Nginx**, and **Docker Compose** 🐳.
 
 ---
 
 ## 🧠 Overview
 
-This project runs **multiple FastAPI app instances** behind **Nginx** to simulate load balancing behavior.
+This project demonstrates **how Nginx distributes requests** among multiple **FastAPI** application instances using various **load balancing strategies**.
+It’s a hands-on example to explore **scalability**, **resilience**, and **traffic distribution** in containerized microservices setups.
 
 ---
 
@@ -48,11 +50,13 @@ You’ll see alternating responses like:
 
 ---
 
-## 🔁 Change Load Balancing Type
+## 🔁 Load Balancing Algorithms
 
-Edit `nginx/nginx.conf` → update the upstream section:
+You can easily switch between load balancing methods in **`nginx/nginx.conf`** under the `upstream` block:
 
-### ⚙️ Round Robin (default)
+### 🌀 Round Robin (default)
+
+Distributes requests evenly across all servers.
 
 ```nginx
 upstream fastapi_app {
@@ -61,7 +65,11 @@ upstream fastapi_app {
 }
 ```
 
+---
+
 ### ⚖️ Least Connections
+
+Routes new requests to the server with the **fewest active connections** — ideal for uneven workloads.
 
 ```nginx
 upstream fastapi_app {
@@ -71,7 +79,11 @@ upstream fastapi_app {
 }
 ```
 
+---
+
 ### 🔒 IP Hash
+
+Ensures each client (based on IP) connects to the **same backend server**, maintaining session consistency.
 
 ```nginx
 upstream fastapi_app {
@@ -81,7 +93,11 @@ upstream fastapi_app {
 }
 ```
 
-Then restart Nginx:
+---
+
+### ♻️ Apply Changes
+
+After modifying the algorithm, restart Nginx:
 
 ```bash
 docker compose restart nginx
@@ -91,19 +107,10 @@ docker compose restart nginx
 
 ## 🧹 Cleanup
 
-To stop and remove containers:
+Stop and remove containers:
 
 ```bash
 docker compose down
 ```
 
 ---
-
-## ✅ Next Steps
-
-In the next stage, we’ll:
-
-* Add **more FastAPI instances dynamically**
-* Try **auto-scaling**
-* Add **metrics and health checks**
-
