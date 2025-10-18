@@ -1,8 +1,9 @@
 
-
 # ⚡ FastAPI + Nginx Load Balancer (Dockerized)
 
 A simple setup to understand and experiment with **different load balancing algorithms** — 🌀 **Round Robin**, ⚖️ **Least Connections**, and 🔒 **IP Hash** — using **FastAPI**, **Nginx**, and **Docker Compose** 🐳.
+
+Now includes **GitHub Actions CI/CD** core functionality for automatic Docker builds and pushes.
 
 ---
 
@@ -29,7 +30,7 @@ fastapi-nginx-loadbalancer/
 
 ---
 
-## ⚙️ Setup & Run
+## ⚙️ Setup & Run Locally
 
 ### 🏗️ 1. Build and Start Containers
 
@@ -52,11 +53,9 @@ You’ll see alternating responses like:
 
 ## 🔁 Load Balancing Algorithms
 
-You can easily switch between load balancing methods in **`nginx/nginx.conf`** under the `upstream` block:
+You can switch between load balancing methods in **`nginx/nginx.conf`** under the `upstream` block:
 
 ### 🌀 Round Robin (default)
-
-Distributes requests evenly across all servers.
 
 ```nginx
 upstream fastapi_app {
@@ -65,11 +64,7 @@ upstream fastapi_app {
 }
 ```
 
----
-
 ### ⚖️ Least Connections
-
-Routes new requests to the server with the **fewest active connections** — ideal for uneven workloads.
 
 ```nginx
 upstream fastapi_app {
@@ -79,11 +74,7 @@ upstream fastapi_app {
 }
 ```
 
----
-
 ### 🔒 IP Hash
-
-Ensures each client (based on IP) connects to the **same backend server**, maintaining session consistency.
 
 ```nginx
 upstream fastapi_app {
@@ -93,15 +84,24 @@ upstream fastapi_app {
 }
 ```
 
----
-
-### ♻️ Apply Changes
-
-After modifying the algorithm, restart Nginx:
+To apply changes:
 
 ```bash
 docker compose restart nginx
 ```
+
+---
+
+## ⚙️ CI/CD (GitHub Actions) Core Functionality
+
+This project includes a **GitHub Actions workflow** that:
+
+* 🔄 **Triggers automatically** on pushes or pull requests to `main`.
+* 🏗️ **Builds the Docker image** for FastAPI + Nginx.
+* 🔑 **Logs in to Docker Hub** securely via GitHub Secrets.
+* 🚀 **Pushes the latest image** to Docker Hub (`dhiraj918106/fastapi-nginx-loadbalancer:latest`).
+
+This ensures every change is automatically built and ready for deployment without manual intervention.
 
 ---
 
@@ -114,3 +114,5 @@ docker compose down
 ```
 
 ---
+
+
